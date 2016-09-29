@@ -3,8 +3,11 @@ package iii.org.tw.myprivatedata;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.ContentResolver;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -83,7 +86,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void b1(View v) {
-
+        ContentResolver contentResolver = getContentResolver();
+        String name = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME;
+        String number = ContactsContract.CommonDataKinds.Phone.NUMBER;
+        Cursor c = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+                ,new String[]{name,number},null,null,name);
+        if (c.moveToNext()) {
+            String dname = c.getString(c.getColumnIndex(name));
+            String dnumber = c.getString(c.getColumnIndex(number));
+            Log.d("Abner",dname + ":" + dnumber);
+        }
     }
     public void b2(View v) {
 
